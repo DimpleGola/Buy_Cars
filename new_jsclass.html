@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Cars</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .main {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #5c67f2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #3a40e0;
+            transform: translateY(-2px);
+        }
+
+        #car,
+        #bill {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            background-color: #e9e9ff;
+            border-left: 5px solid #5c67f2;
+            border-radius: 5px;
+            display: none;
+            animation: fadeIn 1s;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p class="main">BUY CARS</p>
+
+        <button onclick="print_details('Audi')">Audi-2022</button>
+        <button onclick="print_details('Ford')">Ford-2023</button>
+        <button onclick="print_details('Lamborghini')">Lamborghini-2023</button>
+        <button onclick="print_details('Mercedes')">Mercedes-2023</button>
+        <button onclick="print_details('GM')">GM-2023</button>
+
+        <p id="car"></p>
+        <p id="bill"></p>
+
+        <!-- Modal for Car Details -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p id="modalText">Some text in the Modal..</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Cars {
+            constructor(name, year, price) {
+                this.name = name;
+                this.year = year;
+                this.price = price;
+            }
+
+            age() {
+                const current_year = new Date().getFullYear();
+                return `The age of car is ${current_year - this.year} years.`;
+            }
+        }
+
+        class Bill extends Cars {
+            constructor(name, year, price, customer) {
+                super(name, year, price);
+                this.customer = customer;
+            }
+
+            print_bill() {
+                return `Mrs./Mr. ${this.customer} has bought ${this.name} of ${this.year} make for $${this.price}.`;
+            }
+        }
+
+        function print_details(buy_car) {
+            let mycar, mybill, Buyer = prompt("Please enter buyer's name");
+            if (!Buyer) return;
+            switch (buy_car) {
+                case "Audi":
+                    mybill = new Bill("Audi", 2022, 4000000, Buyer);
+                    break;
+                case "Ford":
+                    mybill = new Bill("Ford", 2023, 5000000, Buyer);
+                    break;
+                
+                case "Lamborghini":
+                    mycar = new Cars("Lamborghini", 2023, 6000000);
+                    mybill = new Bill("Lamborghini", 2023, 6000000, Buyer);
+                    break;
+                case "Mercedes":
+                    mycar = new Cars("Mercedes", 2023, 7000000);
+                    mybill = new Bill("Mercedes", 2023, 7000000, Buyer);
+                    break;
+                case "GM":
+                    mycar = new Cars("GM", 2023, 8000000);
+                    mybill = new Bill("GM", 2023, 8000000, Buyer);
+                    break;
+                default:
+                    showModal("No car selected", "No bill available");
+                    return;
+            }
+
+            document.getElementById("car").innerHTML = mybill.age();
+            document.getElementById("bill").innerHTML = mybill.print_bill();
+            document.getElementById("car").style.display = 'block';
+            document.getElementById("bill").style.display = 'block';
+        }
+
+        // Modal Functionality
+        function showModal(title, content) {
+            var modal = document.getElementById("modal");
+            var modalText = document.getElementById("modalText");
+            modalText.innerHTML = `<strong>${title}</strong><p>${content}</p>`;
+            modal.style.display = "block";
+            document.querySelector('.close').onclick = function () {
+                modal.style.display = "none";
+            };
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            };
+        }
+    </script>
+</body>
+
+</html>

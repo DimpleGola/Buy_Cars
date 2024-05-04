@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Cars</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .main {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        button {
+            background-color: #ff7e67;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff5434;
+            box-shadow: 0 12px 24px -4px rgba(255, 126, 103, 0.6);
+            transform: translateY(-2px);
+        }
+
+        #car,
+        #bill {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            background-color: #e9e9ff;
+            border-left: 5px solid #ff7e67;
+            border-radius: 5px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, visibility 0s 0.5s;
+        }
+
+        #car.visible,
+        #bill.visible {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: scaleIn 0.3s ease-in-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Tooltip Styling */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p class="main">BUY CARS</p>
+
+        <div class="tooltip">
+            <button onclick="print_details('Audi')">Audi-2022</button>
+            <span class="tooltiptext">Click for Audi details</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="print_details('Ford')">Ford-2023</button>
+            <span class="tooltiptext">Click for Ford details</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="print_details('Lamborghini')">Lamborghini-2023</button>
+            <span class="tooltiptext">Click for Lamborghini details</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="print_details('Mercedes')">Mercedes-2023</button>
+            <span class="tooltiptext">Click for Mercedes details</span>
+        </div>
+        <div class="tooltip">
+            <button onclick="print_details('GM')">GM-2023</button>
+            <span class="tooltiptext">Click for GM details</span>
+        </div>
+
+        <!-- <button onclick="openDisplayModal()">Display</button> -->
+
+
+        <p id="car"></p>
+        <p id="bill"></p>
+
+        <!-- Modal for Car Details -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p id="modalText">Some text in the Modal..</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Cars {
+            constructor(name, year, price) {
+                this.name = name;
+                this.year = year;
+                this.price = price;
+            }
+
+            age() {
+                const current_year = new Date().getFullYear();
+                return `The age of car is ${current_year - this.year} years.`;
+            }
+        }
+
+        class Bill extends Cars {
+            constructor(name, year, price, customer) {
+                super(name, year, price);
+                this.customer = customer;
+            }
+
+            print_bill() {
+                return `Mrs./Mr. ${this.customer} has bought ${this.name} of ${this.year} make for ${this.price}.`;
+            }
+        }
+
+        function print_details(buy_car) {
+            let Buyer = prompt("Please enter buyer's name");
+            if (!Buyer) {
+                showModal("Error", "Buyer's name is required!");
+                return;
+            }
+            let mybill;
+            switch (buy_car) {
+                case "Audi":
+                    mybill = new Bill("Audi", 2022, 4000000, Buyer);
+                    break;
+                case "Ford":
+                    mycar = new Cars("Ford", 2023, 5000000);
+                    mybill = new Bill("Ford", 2023, 5000000, Buyer);
+                    break;
+                case "Lamborghini":
+                    mycar = new Cars("Lamborghini", 2023, 6000000);
+                    mybill = new Bill("Lamborghini", 2023, 6000000, Buyer);
+                    break;
+                case "Mercedes":
+                    mycar = new Cars("Mercedes", 2023, 7000000);
+                    mybill = new Bill("Mercedes", 2023, 7000000, Buyer);
+                    break;
+                case "GM":
+                    mycar = new Cars("GM", 2023, 8000000);
+                    mybill = new Bill("GM", 2023, 8000000, Buyer);
+                    break;
+                default:
+                    showModal("No car selected", "No bill available");
+                    return;
+            }
+
+            document.getElementById("car").classList.add('visible');
+            document.getElementById("bill").classList.add('visible');
+            document.getElementById("car").innerHTML = mybill.age();
+            document.getElementById("bill").innerHTML = mybill.print_bill();
+        }
+
+
+        function openDisplayModal() {
+            var modal = document.getElementById('modal');
+            var modalText = document.getElementById('modalText');
+            modalText.innerHTML = 'This is the content that will display in the modal when the "Display" button is clicked.';
+            modal.style.display = 'block'; // Show the modal
+        }
+
+        function closeModal() {
+            var modal = document.getElementById('modal');
+            modal.style.display = 'none'; // Hide the modal
+        }
+
+
+        function showModal(title, content) {
+            var modal = document.getElementById("modal");
+            var modalText = document.getElementById("modalText");
+            modalText.innerHTML = `<strong>${title}</strong><p>${content}</p>`;
+            modal.style.display = "block";
+        }
+
+       
+
+        window.onclick = function (event) {
+            var modal = document.getElementById("modal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+    </script>
+</body>
+
+</html>

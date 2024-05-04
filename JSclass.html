@@ -1,0 +1,85 @@
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Class</title>
+</head>
+<body>
+
+    <p class="main">BUY CARS</p>
+    
+    <button onclick="print_details('Audi')">Audi-2022</button>
+    <button onclick="print_details('Ford')">Ford-2023</button>
+    <button onclick="print_details('Lamborghini')">Lamborghini-2023</button>
+    <button onclick="print_details('Mercedes')">Mercedes-2023</button>
+    <button onclick="print_details('GM')">GM-2023</button>
+    
+    <p id="car"></p>
+    <p id="bill"></p>
+
+    <script>
+        class Cars {
+            constructor(name, year, price) {
+                this.name = name;
+                this.year = year;
+                this.price = price;
+            }
+
+            age() {
+                const current_year = new Date().getFullYear();
+                return `The age of car is ${current_year - this.year} years.`;
+            }
+        }
+
+        class Bill extends Cars {
+            constructor(name, year, price, customer) {
+                super(name, year, price);
+                this.customer = customer;
+            }
+
+            print_bill() {
+                return `Mrs./Mr. ${this.customer} has bought ${this.name} of ${this.year} make for ${this.price}.`;
+            }
+        }
+
+        function print_details(buy_car) {
+            let mycar, mybill,Buyer;
+            Buyer=prompt("Please enter buyer's name")
+            switch (buy_car) {
+                case "Audi":
+                    // mycar = new Cars("Audi", 2022, 4000000);
+                    mybill = new Bill("Audi", 2022, 4000000,Buyer);
+                    break;
+                case "Ford":
+                    mycar = new Cars("Ford", 2023, 5000000);
+                    mybill = new Bill("Ford", 2023, 5000000, Buyer);
+                    break;
+                    case "Lamborghini":
+                    mycar = new Cars("Lamborghini", 2023, 6000000);
+                    mybill = new Bill("Lamborghini", 2023, 6000000, Buyer);
+                    break;
+                    case "Mercedes":
+                    mycar = new Cars("Mercedes", 2023, 7000000);
+                    mybill = new Bill("Mercedes", 2023, 7000000, Buyer);
+                    break;
+                    case "GM":
+                    mycar = new Cars("GM", 2023, 8000000);
+                    mybill = new Bill("GM", 2023, 8000000, Buyer);
+                    break;
+
+                default:
+                    document.getElementById("car").innerHTML = "No car selected";
+                    document.getElementById("bill").innerHTML = "No bill available";
+                    return; // Exit function if no valid car is selected
+            }
+
+            document.getElementById("car").innerHTML = mybill.age();
+            document.getElementById("bill").innerHTML = mybill.print_bill();
+        }
+    </script>
+    
+</body>
+</html>
+
